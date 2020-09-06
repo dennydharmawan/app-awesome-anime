@@ -37,13 +37,13 @@ const App = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <DefaultSeo
-        titleTemplate={'%s | My Site'}
-        description="A cool website"
+        titleTemplate={'%s | PokeDex'}
+        description="A website to search for pokemon"
         openGraph={{
           type: 'website',
           locale: 'en_IE',
-          url: 'https://my-site.vercel.app/',
-          site_name: 'My Site',
+          url: 'https://denny-creates-a-pokedex.vercel.app/',
+          site_name: 'PokeDex',
         }}
       />
 
