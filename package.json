@@ -23,7 +23,7 @@
     "react-dom": "latest",
     "react-intersection-observer": "^8.27.1",
     "react-query": "^2.15.1",
-    "react-query-devtools": "^2.4.5"
+    "react-query-devtools": "^2.4.7"
   },
   "scripts": {
     "dev:all": "concurrently -r \"npx next\" \"npx graphql-codegen --watch\"",
