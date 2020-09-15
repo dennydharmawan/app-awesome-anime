@@ -1,31 +1,39 @@
-// import "nprogress/nprogress.css";
+import "react-aspect-ratio/aspect-ratio.css";
 
 import { DefaultSeo } from "next-seo";
 import { AppProps } from "next/app";
-import { Router } from "next/dist/client/router";
 import NextNprogress from "nextjs-progressbar";
-import NProgress from "nprogress";
 import { useEffect } from "react";
 import { ReactQueryCacheProvider, ReactQueryConfigProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query-devtools/dist/react-query-devtools.development";
+import { ReactQueryDevtools } from "react-query-devtools";
 import { Hydrate } from "react-query/hydration";
 
+import { Box, makeStyles } from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
 
+import MediaQueryHelper from "../components/MediaQueryHelper";
 import theme from "../constants/theme";
 
 /* https://react-query.tanstack.com/docs/api#reactqueryconfigprovider  */
 const queryConfig = {
   queries: {
-    staleTime: 0, // 5 minutes
+    staleTime: 5 * 60 * 1000, // 5 minutes
   },
 };
 
-// https://www.npmjs.com/package/nextjs-progressbar
-// https://medium.com/@apalshah/next-js-how-to-make-your-own-progress-bar-indicator-component-easily-445e58777473
+const useStyles = makeStyles((theme) => ({
+  devTools: {
+    '& div > div': {
+      fontFamily: 'Inter, sans-serif !important',
+      fontSize: '14px !important',
+    },
+  },
+}));
 
 const App = ({ Component, pageProps }: AppProps) => {
+  const classes = useStyles();
+
   useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
@@ -37,13 +45,13 @@ const App = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <DefaultSeo
-        titleTemplate={'%s | PokeDex'}
-        description="A website to search for pokemon"
+        titleTemplate={'Awesome Anime'}
+        description="An awesome platform to search, follow, and watch your favorite animes"
         openGraph={{
           type: 'website',
           locale: 'en_IE',
-          url: 'https://denny-creates-a-pokedex.vercel.app/',
-          site_name: 'PokeDex',
+          url: 'https://awesome-anime.vercel.app/',
+          site_name: 'Awesome Anime',
         }}
       />
 
@@ -52,13 +60,17 @@ const App = ({ Component, pageProps }: AppProps) => {
         <ReactQueryConfigProvider config={queryConfig}>
           <ReactQueryCacheProvider>
             <Hydrate state={pageProps.dehydratedState}>
-              <Component {...pageProps} />
+              <div style={{ fontSize: '62.5%' }}>
+                <Component {...pageProps} />
+              </div>
+              <MediaQueryHelper />
               <NextNprogress
                 color="#fff"
                 options={{ minimum: 0.3, easing: 'ease', speed: 800 }}
               />
-              {/* ReactQueryDevTools must be inside ReactQueryCacheProvider or it won't be working */}
-              <ReactQueryDevtools initialIsOpen />
+              <Box className={classes.devTools}>
+                <ReactQueryDevtools initialIsOpen />
+              </Box>
             </Hydrate>
           </ReactQueryCacheProvider>
         </ReactQueryConfigProvider>

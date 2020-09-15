@@ -1,44 +1,386 @@
 import gql from "graphql-tag";
 
-export const pokemonsQuery = gql`
-  query pokemons($limit: Int, $offset: Int) {
-    pokemons(limit: $limit, offset: $offset) {
-      count
-      next
-      previous
+const MediaFragment = gql`
+  fragment media on Media {
+    id
+    title {
+      userPreferred
+    }
+    coverImage {
+      extraLarge
+      large
+      color
+    }
+    startDate {
+      year
+      month
+      day
+    }
+    endDate {
+      year
+      month
+      day
+    }
+    bannerImage
+    season
+    description
+    type
+    format
+    status
+    episodes
+    duration
+    chapters
+    volumes
+    genres
+    isAdult
+    averageScore
+    popularity
+    mediaListEntry {
+      id
       status
-      message
-      results {
-        url
-        name
-        image
+    }
+    nextAiringEpisode {
+      airingAt
+      timeUntilAiring
+      episode
+    }
+    studios(isMain: true) {
+      edges {
+        isMain
+        node {
+          id
+          name
+        }
       }
     }
   }
 `;
 
-export const pokemonDetailQuery = gql`
-  query pokemon($name: String!) {
-    pokemon(name: $name) {
+/**** End of Fragment ****/
+
+export const MediaQuery = gql`
+  query media($id: Int, $type: MediaType, $isAdult: Boolean) {
+    Media(id: $id, type: $type, isAdult: $isAdult) {
+      id
+      title {
+        userPreferred
+        romaji
+        english
+        native
+      }
+      coverImage {
+        extraLarge
+        large
+      }
+      bannerImage
+      startDate {
+        year
+        month
+        day
+      }
+      endDate {
+        year
+        month
+        day
+      }
+      description
+      season
+      seasonYear
+      type
+      format
+      status
+      episodes
+      duration
+      chapters
+      volumes
+      genres
+      synonyms
+      source(version: 2)
+      isAdult
+      isLocked
+      meanScore
+      averageScore
+      popularity
+      favourites
+      hashtag
+      countryOfOrigin
+      isLicensed
+      isFavourite
+      isRecommendationBlocked
+      nextAiringEpisode {
+        airingAt
+        timeUntilAiring
+        episode
+      }
+      relations {
+        edges {
+          id
+          relationType(version: 2)
+          node {
+            id
+            title {
+              userPreferred
+            }
+            format
+            type
+            status
+            bannerImage
+            coverImage {
+              large
+            }
+          }
+        }
+      }
+      characterPreview: characters(perPage: 6, sort: [ROLE, ID]) {
+        edges {
+          id
+          role
+          voiceActors(language: JAPANESE) {
+            id
+            name {
+              full
+            }
+            language
+            image {
+              large
+            }
+          }
+          node {
+            id
+            name {
+              full
+            }
+            image {
+              large
+            }
+          }
+        }
+      }
+      staffPreview: staff(perPage: 8) {
+        edges {
+          id
+          role
+          node {
+            id
+            name {
+              full
+            }
+            language
+            image {
+              large
+            }
+          }
+        }
+      }
+      studios {
+        edges {
+          isMain
+          node {
+            id
+            name
+          }
+        }
+      }
+      reviewPreview: reviews(perPage: 2, sort: [RATING_DESC, ID]) {
+        pageInfo {
+          total
+        }
+        nodes {
+          id
+          summary
+          rating
+          ratingAmount
+          user {
+            id
+            name
+            avatar {
+              large
+            }
+          }
+        }
+      }
+      recommendations(perPage: 7, sort: [RATING_DESC, ID]) {
+        pageInfo {
+          total
+        }
+        nodes {
+          id
+          rating
+          userRating
+          mediaRecommendation {
+            id
+            title {
+              userPreferred
+            }
+            format
+            type
+            status
+            bannerImage
+            coverImage {
+              large
+            }
+          }
+          user {
+            id
+            name
+            avatar {
+              large
+            }
+          }
+        }
+      }
+      externalLinks {
+        site
+        url
+      }
+      streamingEpisodes {
+        site
+        title
+        thumbnail
+        url
+      }
+      trailer {
+        id
+        site
+      }
+      rankings {
+        id
+        rank
+        type
+        format
+        year
+        season
+        allTime
+        context
+      }
+      tags {
+        id
+        name
+        description
+        rank
+        isMediaSpoiler
+        isGeneralSpoiler
+      }
+      mediaListEntry {
+        id
+        status
+        score
+      }
+      stats {
+        statusDistribution {
+          status
+          amount
+        }
+        scoreDistribution {
+          score
+          amount
+        }
+      }
+    }
+  }
+`;
+
+export const GenreAndTagQuery = gql`
+  query genreAndTag {
+    genres: GenreCollection
+    tags: MediaTagCollection {
+      name
+      description
+      category
+      isAdult
+    }
+  }
+`;
+
+export const AnimeDashboard = gql`
+  query AnimeDashboard(
+    $season: MediaSeason
+    $seasonYear: Int
+    $nextSeason: MediaSeason
+    $nextYear: Int
+  ) {
+    trending: Page(page: 1, perPage: 10) {
+      media(sort: TRENDING_DESC, type: ANIME, isAdult: false) {
+        ...media
+      }
+    }
+    season: Page(page: 1, perPage: 10) {
+      media(
+        season: $season
+        seasonYear: $seasonYear
+        sort: POPULARITY_DESC
+        type: ANIME
+        isAdult: false
+      ) {
+        ...media
+      }
+    }
+    nextSeason: Page(page: 1, perPage: 10) {
+      media(
+        season: $nextSeason
+        seasonYear: $nextYear
+        sort: POPULARITY_DESC
+        type: ANIME
+        isAdult: false
+      ) {
+        ...media
+      }
+    }
+    popular: Page(page: 1, perPage: 10) {
+      media(sort: POPULARITY_DESC, type: ANIME, isAdult: false) {
+        ...media
+      }
+    }
+    top: Page(page: 1, perPage: 10) {
+      media(sort: SCORE_DESC, type: ANIME, isAdult: false) {
+        ...media
+      }
+    }
+  }
+  ${MediaFragment}
+`;
+
+// this needs authentication
+export const ViewerQuery = gql`
+  query Viewer {
+    Viewer {
       id
       name
-      abilities {
-        ability {
-          name
+      about
+      avatar {
+        large
+      }
+      bannerImage
+      unreadNotificationCount
+      donatorTier
+      donatorBadge
+      moderatorStatus
+      options {
+        titleLanguage
+        airingNotifications
+        displayAdultContent
+        profileColor
+        notificationOptions {
+          type
+          enabled
         }
       }
-      types {
-        type {
-          name
+      mediaListOptions {
+        scoreFormat
+        rowOrder
+        animeList {
+          customLists
+          sectionOrder
+          splitCompletedSectionByFormat
+          advancedScoring
+          advancedScoringEnabled
         }
-      }
-      height
-      weight
-      base_experience
-      stats {
-        base_stat
-        stat {
-          name
+        mangaList {
+          customLists
+          sectionOrder
+          splitCompletedSectionByFormat
+          advancedScoring
+          advancedScoringEnabled
         }
       }
     }

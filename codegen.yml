@@ -1,5 +1,5 @@
 overwrite: true
-schema: 'https://mazipan-gql-pokeapi.herokuapp.com/graphql' # GraphQL endpoint via the nexus dev server
+schema: 'https://graphql.anilist.co' # GraphQL endpoint via the nexus dev server
 documents: 'graphql/**/*.graphql.ts' # parse graphql operations in matching files
 generates:
   generated/graphql.ts: # location for generated types, hooks and components

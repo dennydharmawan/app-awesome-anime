@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography } from "@material-ui/core";
+import { AppBar, Container, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { AcUnitRounded } from "@material-ui/icons";
 
@@ -15,16 +15,20 @@ const Header: React.FC = () => {
   const classes = useStyles();
 
   return (
-    <div>
+    <>
       <AppBar className={classes.root}>
-        <Toolbar>
-          <AcUnitRounded />
-          <Typography>PokeDex</Typography>
-          <AcUnitRounded />
-        </Toolbar>
+        <Container maxWidth="lg">
+          <Toolbar>
+            <AcUnitRounded />
+            <Typography variant="h4" component="h1">
+              Awesome Anime
+            </Typography>
+            <AcUnitRounded />
+          </Toolbar>
+        </Container>
       </AppBar>
       <div className={classes.offset} />
-    </div>
+    </>
   );
 };
 
