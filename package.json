@@ -42,7 +42,7 @@
     "dev:all": "concurrently -r \"npx next\" \"npx graphql-codegen --watch\"",
     "dev:next": "next",
     "dev:codegen": "npx graphql-codegen --watch",
-    "debug": "NODE_OPTIONS='--inspect' next",
+    "dev:debug": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start",
     "deploy-app": "vercel",

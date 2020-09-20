@@ -2,7 +2,11 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import { parseMultiStreamVideo, parseVideo } from "../../lib/animeScraper/html";
 import getPageFromUrl from "../../lib/getPageFromUrl";
-import { EpisodeMultiStream, MultiStreamUrl, VideoSource } from "./types";
+import {
+  EpisodeMultiStream,
+  MultiStreamUrl,
+  VideoSource
+} from "../../lib/types";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const {
@@ -19,3 +23,24 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({ data: multiStreamUrl }));
 };
+
+// const episodesWithVideoSources: EpisodeVideoSources[] = await pMap(
+//   episodes,
+//   async (episode: Episode, index: number) => {
+//     const videoSources = await getPageFromUrl<VideoSource[] | null>(
+//       episode.url,
+//       {},
+//       parseVideo
+//     );
+
+//     // remove empty url
+//     const filteredVideoSource = videoSources
+//       ? videoSources.filter((videoSource) => videoSource.url)
+//       : null;
+
+//     return {
+//       ...episode,
+//       videoSources: filteredVideoSource || [],
+//     };
+//   }
+// );

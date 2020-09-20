@@ -8,7 +8,7 @@ import {
   parseSearchResults
 } from "../../lib/animeScraper/html";
 import getPageFromUrl from "../../lib/getPageFromUrl";
-import { AnimeInfo, Episode, SearchResult } from "./types";
+import { AnimeInfo, Episode, SearchResult } from "../../lib/types";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const {
@@ -37,6 +37,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({ data: [] }));
+
+    return;
   }
 
   const animeInfo = await getPageFromUrl<AnimeInfo>(
@@ -44,6 +46,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     {},
     parseAnimePage
   );
+
+  console.log(`Parsing episodes anime id ${animeInfo.id}`);
 
   const episodes = await getPageFromUrl<Episode[]>(
     '/load-list-episode',
@@ -56,27 +60,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     },
     parseEpisodeListing
   );
-
-  // const episodesWithVideoSources: EpisodeVideoSources[] = await pMap(
-  //   episodes,
-  //   async (episode: Episode, index: number) => {
-  //     const videoSources = await getPageFromUrl<VideoSource[] | null>(
-  //       episode.url,
-  //       {},
-  //       parseVideo
-  //     );
-
-  //     // remove empty url
-  //     const filteredVideoSource = videoSources
-  //       ? videoSources.filter((videoSource) => videoSource.url)
-  //       : null;
-
-  //     return {
-  //       ...episode,
-  //       videoSources: filteredVideoSource || [],
-  //     };
-  //   }
-  // );
 
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
