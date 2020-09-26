@@ -4,12 +4,16 @@ import { useMemo } from "react";
 let client: GraphQLClient;
 
 // https://github.com/prisma-labs/graphql-request
-function createGraphqlClient(url: string) {
+function createGraphqlClient(
+  url: string = process.env.NEXT_PUBLIC_GRAPHQL_URL!
+) {
   return new GraphQLClient(url, {
     headers: {},
   });
 }
-export function initializeClient(url: string) {
+export function initializeClient(
+  url: string = process.env.NEXT_PUBLIC_GRAPHQL_URL!
+) {
   const _client = client ?? createGraphqlClient(url);
 
   return _client;

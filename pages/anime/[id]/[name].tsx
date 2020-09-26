@@ -2,14 +2,14 @@ import axios from "axios";
 import format from "date-fns/format";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import React from "react";
-import AspectRatio from "react-aspect-ratio";
+import React, { useState } from "react";
 import { makeQueryCache, useQuery } from "react-query";
 import { dehydrate } from "react-query/hydration";
 
 import {
   Backdrop,
   Box,
+  Button,
   Card,
   CardMedia,
   CircularProgress,
@@ -21,6 +21,10 @@ import {
 import Header from "../../../components/Header";
 import KeyValueVertical from "../../../components/KeyValueVertical";
 import Layout from "../../../components/Layout";
+import StreamEpisodeControl from "../../../components/Stream";
+import { getSdk, MediaQuery } from "../../../generated/graphql";
+import { initializeClient } from "../../../graphql/client";
+import { Episode, EpisodeGroup, MultiStreamUrl } from "../../../lib/types";
 import useSdk from "../../../lib/useSdk";
 
 const useStyles = makeStyles((theme) => ({
@@ -48,14 +52,14 @@ const useStyles = makeStyles((theme) => ({
     minHeight: '100vh',
   },
   mainContent: {
-    flexGrow: 1,
+    display: 'flex',
     padding: theme.spacing(1.5),
   },
   bannerCard: {
     borderRadius: '0px',
   },
   bannerMedia: {
-    height: '500px',
+    height: '352px',
     borderRadius: '0px',
   },
   coverCard: {
@@ -68,16 +72,9 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: '150%',
   },
   flexGap: {
-    '--gap': '32px',
-    display: 'inline-flex',
-    alignItems: 'flex-start',
-    flexWrap: 'wrap',
-    margin: 'calc(-1 * var(--gap)) 0 0 calc(-1 * var(--gap))',
-    width: 'calc(100% + var(--gap))',
-
-    '& > *': {
-      margin: 'var(--gap) 0 0 var(--gap)',
-    },
+    display: 'grid',
+    gridTemplateColumns: 'minmax(150px, 25%) 1fr',
+    gap: '24px',
   },
   greyText: {
     color: 'hsl(0, 0%, 29%)',
@@ -109,9 +106,10 @@ const pageDetail = () => {
   const classes = useStyles();
   const router = useRouter();
   const { id, name } = router.query;
+  const [activeEpisode, setActiveEpisode] = useState<number>(1);
 
   const sdk = useSdk();
-  const { status, data, error } = useQuery(
+  const { status: statusAnime, data: dataAnime, error: errorAnime } = useQuery(
     ['anime', { id, name }],
     () =>
       sdk.media({
@@ -123,33 +121,26 @@ const pageDetail = () => {
   );
 
   const {
-    status: statusStream,
-    data: dataStream,
-    error: errorStream,
-  } = useQuery<{
-    url: string;
-  } | null>(
-    ['stream', { id, name, episode: 1 }],
+    status: statusEpisodes,
+    data: dataEpisodes,
+    error: errorEpisodes,
+  } = useQuery<Episode[]>(
+    ['episodes', { id, name }],
     () =>
-      axios
-        .post(
-          '/api/streams',
-          {
-            url: 'https://gogoanime.so/black-clover-episode-1',
-          },
-          {
-            baseURL: 'http://localhost:3000',
-          }
-        )
-        .then((response) => {
-          return response.data.data || null;
-        }),
+      axios('/api/animes', {
+        baseURL: 'http://localhost:3000',
+        params: {
+          keyword: (name as string).replace(/-/g, ' '),
+        },
+      }).then((response) => {
+        return response.data.data || null;
+      }),
     {
       enabled: id && name,
     }
   );
 
-  if (status === 'loading') {
+  if (statusAnime === 'loading' || statusEpisodes === 'loading') {
     return (
       <Layout>
         <Backdrop open={true}>
@@ -166,7 +157,7 @@ const pageDetail = () => {
         <Card className={classes.bannerCard} elevation={0}>
           <CardMedia
             className={classes.bannerMedia}
-            image={data?.Media?.bannerImage || ''}
+            image={dataAnime?.Media?.bannerImage || ''}
             component={'div'}
           />
         </Card>
@@ -177,14 +168,14 @@ const pageDetail = () => {
               <Card className={classes.coverCard} elevation={0}>
                 <CardMedia
                   className={classes.coverMedia}
-                  image={data?.Media?.coverImage?.large || ''}
+                  image={dataAnime?.Media?.coverImage?.large || ''}
                   component={'div'}
                 />
               </Card>
             </Box>
             <Box display="flex" flexDirection="column" flexGrow={1} p={3}>
               <Typography variant="bold">
-                {data?.Media?.title?.userPreferred}
+                {dataAnime?.Media?.title?.userPreferred}
               </Typography>
               <div
                 style={{
@@ -194,7 +185,7 @@ const pageDetail = () => {
                   fontSize: '1.4rem',
                 }}
                 dangerouslySetInnerHTML={{
-                  __html: data?.Media?.description as string,
+                  __html: dataAnime?.Media?.description as string,
                 }}
               />
             </Box>
@@ -206,25 +197,31 @@ const pageDetail = () => {
         <Container maxWidth="lg">
           <Box className={classes.flexGap}>
             <Box className={classes.sidebar}>
-              <KeyValueVertical keyAs="Format" value={data?.Media?.format} />
+              <KeyValueVertical
+                keyAs="Format"
+                value={dataAnime?.Media?.format}
+              />
               <KeyValueVertical
                 keyAs="Episodes"
-                value={data?.Media?.episodes?.toString()}
+                value={dataAnime?.Media?.episodes?.toString()}
               />
               <KeyValueVertical
                 keyAs="Duration per Episode"
-                value={`${data?.Media?.duration} mins`}
+                value={`${dataAnime?.Media?.duration} mins`}
               />
-              <KeyValueVertical keyAs="Status" value={data?.Media?.status} />
+              <KeyValueVertical
+                keyAs="Status"
+                value={dataAnime?.Media?.status}
+              />
               <KeyValueVertical
                 keyAs="Start Date"
                 value={
-                  data?.Media?.startDate &&
+                  dataAnime?.Media?.startDate &&
                   format(
                     new Date(
-                      data?.Media?.startDate?.year!,
-                      data?.Media?.startDate?.month!,
-                      data?.Media?.startDate?.day!
+                      dataAnime?.Media?.startDate?.year!,
+                      dataAnime?.Media?.startDate?.month!,
+                      dataAnime?.Media?.startDate?.day!
                     ),
                     'MMM dd, yyyy'
                   )
@@ -232,69 +229,68 @@ const pageDetail = () => {
               />
               <KeyValueVertical
                 keyAs="Season"
-                value={`${data?.Media?.season} ${data?.Media?.seasonYear}`}
+                value={`${dataAnime?.Media?.season} ${dataAnime?.Media?.seasonYear}`}
               />
               <KeyValueVertical
                 keyAs="Average Score"
-                value={`${data?.Media?.averageScore}%`}
+                value={`${dataAnime?.Media?.averageScore}%`}
               />
               <KeyValueVertical
                 keyAs="Mean Score"
-                value={`${data?.Media?.meanScore}%`}
+                value={`${dataAnime?.Media?.meanScore}%`}
               />
               <KeyValueVertical
                 keyAs="Popularity"
-                value={`${data?.Media?.popularity}`}
+                value={`${dataAnime?.Media?.popularity}`}
               />
               <KeyValueVertical
                 keyAs="Producers"
                 value={
-                  data?.Media?.studios?.edges &&
-                  data?.Media?.studios?.edges[0]?.node?.name
+                  dataAnime?.Media?.studios?.edges &&
+                  dataAnime?.Media?.studios?.edges[0]?.node?.name
                 }
               />
               <KeyValueVertical
                 keyAs="Source"
-                value={data?.Media?.source || ''}
+                value={dataAnime?.Media?.source || ''}
               />
               <KeyValueVertical
                 keyAs="Hashtag"
-                value={data?.Media?.hashtag || ''}
+                value={dataAnime?.Media?.hashtag || ''}
               />
               <KeyValueVertical
                 keyAs="Genres"
-                value={data?.Media?.genres?.join(', ')}
+                value={dataAnime?.Media?.genres?.join(', ')}
               />
               <KeyValueVertical
                 keyAs="Romaji"
-                value={data?.Media?.title?.romaji}
+                value={dataAnime?.Media?.title?.romaji}
               />
               <KeyValueVertical
                 keyAs="English"
-                value={data?.Media?.title?.english}
+                value={dataAnime?.Media?.title?.english}
               />
               <KeyValueVertical
                 keyAs="Native"
-                value={data?.Media?.title?.native}
+                value={dataAnime?.Media?.title?.native}
               />
               <KeyValueVertical
                 keyAs="Synonyms"
-                value={data?.Media?.synonyms?.join(', ')}
+                value={dataAnime?.Media?.synonyms?.join(', ')}
               />
-              <KeyValueVertical keyAs="Hashtag" value={data?.Media?.hashtag} />
+              <KeyValueVertical
+                keyAs="Hashtag"
+                value={dataAnime?.Media?.hashtag}
+              />
             </Box>
             <Box className={classes.mainContent}>
-              <AspectRatio ratio="16/9" style={{ maxWidth: '560px' }}>
-                {dataStream ? (
-                  <iframe
-                    src={dataStream.url}
-                    frameBorder="0"
-                    allowFullScreen
-                  />
-                ) : (
-                  <div>Can't find video Stream</div>
-                )}
-              </AspectRatio>
+              <StreamEpisodeControl
+                id={id as string}
+                name={name as string}
+                numberOfEpisodes={144}
+                episodePerPage={100}
+                dataEpisodes={dataEpisodes}
+              />
             </Box>
           </Box>
         </Container>
@@ -303,6 +299,7 @@ const pageDetail = () => {
   );
 };
 
+/*
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const mediaName: string = (ctx.params?.name as string) || '';
   const keyword = mediaName.replace(/-/g, ' ');
@@ -348,5 +345,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     },
   };
 };
+*/
 
 export default pageDetail;

@@ -1,5 +1,6 @@
 import axios from "axios";
 import cheerio from "cheerio";
+import { GraphQLNonNull } from "graphql";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import {
@@ -8,11 +9,16 @@ import {
   parseSearchResults
 } from "../../lib/animeScraper/html";
 import getPageFromUrl from "../../lib/getPageFromUrl";
-import { AnimeInfo, Episode, SearchResult } from "../../lib/types";
+import {
+  AnimeInfo,
+  Episode,
+  EpisodeGroup,
+  SearchResult
+} from "../../lib/types";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const {
-    query: { keyword },
+    query: { keyword, numberOfEpisodes },
   } = req;
 
   if (!keyword) {
@@ -41,13 +47,33 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  const animeInfo = await getPageFromUrl<AnimeInfo>(
-    searchResults[0].url,
-    {},
-    parseAnimePage
-  );
+  let animeInfo: AnimeInfo | null = null;
+  for (const searchResult of searchResults) {
+    animeInfo = await getPageFromUrl<AnimeInfo>(
+      searchResult.url,
+      {},
+      parseAnimePage
+    );
 
-  console.log(`Parsing episodes anime id ${animeInfo.id}`);
+    // blacklist types Special
+    if (animeInfo.type !== 'Special') {
+      break;
+    }
+  }
+
+  // Grouping episodes
+  // const episodePerPage = 100;
+  // const episodeNumber = parseInt(numberOfEpisodes as string);
+  // let episodeGroup: EpisodeGroup = {};
+  // let i;
+  // for (i = 0; i <= Math.ceil(episodeNumber / episodePerPage) - 1; i++) {
+  //   episodeGroup[i] = {
+  //     start: i * episodePerPage + 1,
+  //     end: (i + 1) * episodePerPage,
+  //   };
+  // }
+
+  console.log(`Parsing episodes anime id ${animeInfo!.id}`);
 
   const episodes = await getPageFromUrl<Episode[]>(
     '/load-list-episode',
@@ -55,7 +81,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       params: {
         ep_start: 0,
         ep_end: 2000,
-        id: animeInfo.id,
+        id: animeInfo!.id,
       },
     },
     parseEpisodeListing

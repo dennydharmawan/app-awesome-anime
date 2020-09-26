@@ -16,6 +16,7 @@ export type AnimeInfo = {
   summary: string;
   genres: string[];
   released: string;
+  type: string;
 };
 
 export type Episode = {
@@ -38,3 +39,8 @@ export type EpisodeMultiStream = {
   url: string;
   multiStreamUrl: MultiStreamUrl;
 };
+
+export type EpisodeGroup = Record<
+  number,
+  { start: number; end: number }
+> | null;
