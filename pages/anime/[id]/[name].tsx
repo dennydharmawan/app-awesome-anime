@@ -287,7 +287,7 @@ const pageDetail = () => {
               <StreamEpisodeControl
                 id={id as string}
                 name={name as string}
-                numberOfEpisodes={144}
+                numberOfEpisodes={(dataEpisodes && dataEpisodes.length) || 0}
                 episodePerPage={100}
                 dataEpisodes={dataEpisodes}
               />
