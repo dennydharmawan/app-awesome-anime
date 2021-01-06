@@ -4,7 +4,7 @@ import cheerio from "cheerio";
 const getPageFromUrl = async <T>(
   url: string,
   options = {},
-  fn: ($: CheerioStatic) => T
+  fn: ($: cheerio.Root) => T
 ) => {
   const instance = axios.create({
     baseURL: process.env.GOGOANIME_BASE_URL,
@@ -12,6 +12,7 @@ const getPageFromUrl = async <T>(
 
   const response = await instance(url, options);
   const $ = cheerio.load(response.data);
+
   const parsedResult = fn($);
 
   return parsedResult;

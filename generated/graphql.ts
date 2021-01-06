@@ -3,6 +3,8 @@ import { print } from 'graphql';
 import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -918,7 +920,7 @@ export type MediaListOptions = {
   scoreFormat?: Maybe<ScoreFormat>;
   /** The default order list rows should be displayed in */
   rowOrder?: Maybe<Scalars['String']>;
-  /** (Site only) If the user should be using legacy css-supporting list versions */
+  /** @deprecated No longer used */
   useLegacyLists?: Maybe<Scalars['Boolean']>;
   /** The user's anime list options */
   animeList?: Maybe<MediaListTypeOptions>;
@@ -1178,6 +1180,12 @@ export type Media = {
 
 
 /** Anime or Manga */
+export type MediaStatusArgs = {
+  version?: Maybe<Scalars['Int']>;
+};
+
+
+/** Anime or Manga */
 export type MediaDescriptionArgs = {
   asHtml?: Maybe<Scalars['Boolean']>;
 };
@@ -1318,7 +1326,9 @@ export enum MediaStatus {
   /** To be released at a later date */
   NotYetReleased = 'NOT_YET_RELEASED',
   /** Ended before the work could be finished */
-  Cancelled = 'CANCELLED'
+  Cancelled = 'CANCELLED',
+  /** Version 2 only. Is currently paused from releasing and will resume at a later date */
+  Hiatus = 'HIATUS'
 }
 
 /** Date object that allows for incomplete date values (fuzzy) */
@@ -1498,6 +1508,7 @@ export type CharacterDescriptionArgs = {
 export type CharacterMediaArgs = {
   sort?: Maybe<Array<Maybe<MediaSort>>>;
   type?: Maybe<MediaType>;
+  onList?: Maybe<Scalars['Boolean']>;
   page?: Maybe<Scalars['Int']>;
   perPage?: Maybe<Scalars['Int']>;
 };
@@ -1624,6 +1635,8 @@ export type Staff = {
   staffMedia?: Maybe<MediaConnection>;
   /** Characters voiced by the actor */
   characters?: Maybe<CharacterConnection>;
+  /** Media the actor voiced characters in. (Same data as characters with media as node instead of characters) */
+  characterMedia?: Maybe<MediaConnection>;
   /** @deprecated No data available */
   updatedAt?: Maybe<Scalars['Int']>;
   /** Staff member that the submission is referencing */
@@ -1651,6 +1664,7 @@ export type StaffDescriptionArgs = {
 export type StaffStaffMediaArgs = {
   sort?: Maybe<Array<Maybe<MediaSort>>>;
   type?: Maybe<MediaType>;
+  onList?: Maybe<Scalars['Boolean']>;
   page?: Maybe<Scalars['Int']>;
   perPage?: Maybe<Scalars['Int']>;
 };
@@ -1659,6 +1673,15 @@ export type StaffStaffMediaArgs = {
 /** Voice actors or production staff */
 export type StaffCharactersArgs = {
   sort?: Maybe<Array<Maybe<CharacterSort>>>;
+  page?: Maybe<Scalars['Int']>;
+  perPage?: Maybe<Scalars['Int']>;
+};
+
+
+/** Voice actors or production staff */
+export type StaffCharacterMediaArgs = {
+  sort?: Maybe<Array<Maybe<MediaSort>>>;
+  onList?: Maybe<Scalars['Boolean']>;
   page?: Maybe<Scalars['Int']>;
   perPage?: Maybe<Scalars['Int']>;
 };
@@ -1761,6 +1784,7 @@ export type Studio = {
 export type StudioMediaArgs = {
   sort?: Maybe<Array<Maybe<MediaSort>>>;
   isMain?: Maybe<Scalars['Boolean']>;
+  onList?: Maybe<Scalars['Boolean']>;
   page?: Maybe<Scalars['Int']>;
   perPage?: Maybe<Scalars['Int']>;
 };
@@ -4873,12 +4897,24 @@ export const AnimeDashboardDocument = gql`
     }
   }
   season: Page(page: 1, perPage: 10) {
-    media(season: $season, seasonYear: $seasonYear, sort: POPULARITY_DESC, type: ANIME, isAdult: false) {
+    media(
+      season: $season
+      seasonYear: $seasonYear
+      sort: POPULARITY_DESC
+      type: ANIME
+      isAdult: false
+    ) {
       ...media
     }
   }
   nextSeason: Page(page: 1, perPage: 10) {
-    media(season: $nextSeason, seasonYear: $nextYear, sort: POPULARITY_DESC, type: ANIME, isAdult: false) {
+    media(
+      season: $nextSeason
+      seasonYear: $nextYear
+      sort: POPULARITY_DESC
+      type: ANIME
+      isAdult: false
+    ) {
       ...media
     }
   }

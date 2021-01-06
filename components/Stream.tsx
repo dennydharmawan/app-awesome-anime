@@ -87,7 +87,7 @@ const Stream = (props: Props) => {
 
   if (numberOfEpisodes === 0) {
     return (
-      <Box id="Stream" width="100%">
+      <Box sx={{ width: '100%' }}>
         <AspectRatio ratio="16/9">
           <Backdrop className={classes.backdrop} open={true}>
             {`Oops... We can't find any episodes related to this anime.`}
@@ -98,21 +98,21 @@ const Stream = (props: Props) => {
   }
 
   return (
-    <Box id="Stream" width="100%">
+    <Box sx={{ width: '100%' }}>
       <AspectRatio ratio="16/9">
         {dataStream ? (
           <iframe src={dataStream.url} frameBorder="0" allowFullScreen />
         ) : (
           <Backdrop className={classes.backdrop} open={true}>
             Loading stream
-            <Box mt={2}>
+            <Box sx={{ mt: 2 }}>
               <CircularProgress color="inherit" />
             </Box>
           </Backdrop>
         )}
       </AspectRatio>
 
-      <Box mt={2} mb={0.5}>
+      <Box sx={{ mt: 2, mb: 0.5 }}>
         <Box className={classes.flexGap}>
           {Object.entries(episodeGroups).map(([key, value]) => {
             return (

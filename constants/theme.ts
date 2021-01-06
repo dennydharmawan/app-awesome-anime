@@ -59,7 +59,7 @@ let theme = createMuiTheme({
     purpleNavy: '#54548C',
     cornflowerBlue: '#7899D4',
     softWhite: '#E5EBF1',
-    type: 'light',
+    mode: 'light',
   },
   components: {
     MuiTypography: {

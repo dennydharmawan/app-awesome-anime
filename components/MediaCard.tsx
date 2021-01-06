@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 import { Box, Tooltip } from "@material-ui/core";
@@ -70,14 +71,19 @@ export const MediaCard = (props: Props) => {
       <Card className={classes.root} elevation={0}>
         <CardActionArea
           component={Link as React.ElementType}
-          as={`/anime/${media.id}/${toSlugFormat(title)}`}
-          href="/anime/[id]/[name]"
+          href={`/anime/${media.id}/${toSlugFormat(title)}`}
         >
-          <Box style={{ overflow: 'hidden' }}>
-            <CardMedia
+          <Box sx={{ overflow: 'hidden' }}>
+            {/* <CardMedia
               className={classes.media}
               image={media.coverImage?.large as string}
               title={media.title?.userPreferred as string}
+            /> */}
+            <Image
+              src={(media.coverImage?.large as string) || ''}
+              alt={(media.title?.userPreferred as string) || ''}
+              width={184}
+              height={260}
             />
           </Box>
 

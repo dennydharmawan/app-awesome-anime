@@ -8,7 +8,10 @@ type Props = {
 };
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
 }));
 
 const KeyValueVertical = (prop: Props) => {
@@ -18,7 +21,15 @@ const KeyValueVertical = (prop: Props) => {
   if (!keyAs || !value) return null;
 
   return (
-    <Box display="flex" flexDirection="column">
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        boxShadow: 1,
+        py: 0.6,
+        px: 0.4,
+      }}
+    >
       <Typography variant="medium">{keyAs}</Typography>
       <Typography variant="light">{value}</Typography>
     </Box>

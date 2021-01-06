@@ -68,11 +68,13 @@ const getEmoticonRating = (rating: number) => {
     case Boolean(rating >= 75):
       return (
         <Box
-          color="#43a047"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          fontSize="small"
+          sx={{
+            color: '#43a047',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: 'small',
+          }}
         >
           <SentimentVerySatisfiedOutlined />
         </Box>
@@ -84,11 +86,13 @@ const getEmoticonRating = (rating: number) => {
     case Boolean(rating >= 25):
       return (
         <Box
-          color="#fb8c00"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          fontSize="small"
+          sx={{
+            color: '#fb8c00',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: 'small',
+          }}
         >
           <SentimentDissatisfiedOutlined />
         </Box>
@@ -97,11 +101,13 @@ const getEmoticonRating = (rating: number) => {
     case Boolean(rating >= 0):
       return (
         <Box
-          color="#e65100"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          fontSize="small"
+          sx={{
+            color: '#e65100',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: 'small',
+          }}
         >
           <SentimentVeryDissatisfiedOutlined />
         </Box>
@@ -124,15 +130,16 @@ export default function MediaCardTooltip(props: Props) {
   return (
     <Card className={classes.root} elevation={0}>
       <CardContent>
-        <Box display="flex" alignItems="flex-start">
-          <Box display="flex" flexDirection="column">
+        <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Typography variant="bold">
               {toTitleCase(media.title?.userPreferred as string)}
             </Typography>
             <Box
-              display={
-                media.nextAiringEpisode?.timeUntilAiring ? 'block' : 'none'
-              }
+              sx={{
+                display: () =>
+                  media.nextAiringEpisode?.timeUntilAiring ? 'block' : 'none',
+              }}
             >
               <Typography variant="medium" style={{ color: '#6458EE' }}>
                 {media.format !== MediaFormat.Movie
@@ -145,34 +152,37 @@ export default function MediaCardTooltip(props: Props) {
           </Box>
 
           <Box
-            display={media.averageScore ? 'flex' : 'none'}
-            alignItems="center"
-            justifyContent="center"
-            ml="auto"
-            flexDirection="column"
+            sx={{
+              display: () => (media.averageScore ? 'flex' : 'none'),
+              alignItems: 'center',
+              justifyContent: 'center',
+              ml: 'auto',
+              flexDirection: 'column',
+            }}
           >
             {getEmoticonRating(media.averageScore!)}
             <Typography variant="medium">{`${media.averageScore}%`}</Typography>
           </Box>
         </Box>
 
-        <Box display="flex" flexDirection="column" mt={2.5} mb={1}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2.5, mb: 1 }}>
           <Typography variant="medium" color="textPrimary">
             {media.studios?.edges && media.studios?.edges[0]?.node?.name}
           </Typography>
 
-          <Box display="flex">
+          <Box sx={{ display: 'flex' }}>
             <Typography variant="light">
               {media.format
                 ? media.format.replace(/ /g, '_')
                 : 'Unknown Format'}
             </Typography>
             <Box
-              visibility={
-                media.episodes && media.format !== MediaFormat.Movie
-                  ? 'visible'
-                  : 'hidden'
-              }
+              sx={{
+                visibility: () =>
+                  media.episodes && media.format !== MediaFormat.Movie
+                    ? 'visible'
+                    : 'hidden',
+              }}
             >
               <Typography variant="light">
                 {bullet}

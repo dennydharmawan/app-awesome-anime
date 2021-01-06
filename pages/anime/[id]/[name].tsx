@@ -163,8 +163,8 @@ const pageDetail = () => {
         </Card>
 
         <Container maxWidth="lg">
-          <Box display="flex">
-            <Box display="flex">
+          <Box sx={{ display: 'flex' }}>
+            <Box sx={{ display: 'flex' }}>
               <Card className={classes.coverCard} elevation={0}>
                 <CardMedia
                   className={classes.coverMedia}
@@ -173,7 +173,14 @@ const pageDetail = () => {
                 />
               </Card>
             </Box>
-            <Box display="flex" flexDirection="column" flexGrow={1} p={3}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                flexGrow: 1,
+                padding: 3,
+              }}
+            >
               <Typography variant="bold">
                 {dataAnime?.Media?.title?.userPreferred}
               </Typography>

@@ -38,10 +38,10 @@ const index = () => {
   const sdk = useSdk();
   const { status, data, error } = useQuery('animes', () =>
     sdk.AnimeDashboard({
-      nextSeason: MediaSeason.Fall, // TODO: make this dynamic
-      nextYear: 2020,
-      season: MediaSeason.Summer,
-      seasonYear: 2020,
+      nextSeason: MediaSeason.Spring, // TODO: make this dynamic
+      nextYear: 2021,
+      season: MediaSeason.Winter,
+      seasonYear: 2021,
     })
   );
 
@@ -62,11 +62,11 @@ const index = () => {
     <Layout>
       <Grid container spacing={6}>
         <Grid item xs={12}>
-          <Box display="flex" mb={2} alignItems="center">
-            <Box fontWeight={700} fontSize="h5.fontSize">
+          <Box sx={{ display: 'flex', marginBottom: 2, alignItems: 'center' }}>
+            <Box sx={{ fontWeight: 700, fontSize: 'h5.fontSize' }}>
               Trending Now
             </Box>
-            <Box ml="auto">
+            <Box sx={{ marginLeft: 'auto' }}>
               <Button variant="outlined" color="primary">
                 View All
               </Button>
@@ -85,11 +85,11 @@ const index = () => {
         </Grid>
 
         <Grid item xs={12}>
-          <Box display="flex" mb={2} alignItems="center">
-            <Box fontWeight={700} fontSize="h5.fontSize">
+          <Box sx={{ display: 'flex', marginBottom: 2, alignItems: 'center' }}>
+            <Box sx={{ fontWeight: 700, fontSize: 'h5.fontSize' }}>
               Popular this season
             </Box>
-            <Box ml="auto">
+            <Box sx={{ marginLeft: 'auto' }}>
               <Button variant="outlined" color="primary">
                 View All
               </Button>
@@ -108,11 +108,11 @@ const index = () => {
         </Grid>
 
         <Grid item xs={12}>
-          <Box display="flex" mb={2} alignItems="center">
-            <Box fontWeight={700} fontSize="h5.fontSize">
+          <Box sx={{ display: 'flex', marginBottom: 2, alignItems: 'center' }}>
+            <Box sx={{ fontWeight: 700, fontSize: 'h5.fontSize' }}>
               Upcoming
             </Box>
-            <Box ml="auto">
+            <Box sx={{ marginLeft: 'auto' }}>
               <Button variant="outlined" color="primary">
                 View All
               </Button>
@@ -131,11 +131,11 @@ const index = () => {
         </Grid>
 
         <Grid item xs={12}>
-          <Box display="flex" mb={2} alignItems="center">
-            <Box fontWeight={700} fontSize="h5.fontSize">
+          <Box sx={{ display: 'flex', marginBottom: 2, alignItems: 'center' }}>
+            <Box sx={{ fontWeight: 700, fontSize: 'h5.fontSize' }}>
               Popular all time
             </Box>
-            <Box ml="auto">
+            <Box sx={{ marginLeft: 'auto' }}>
               <Button variant="outlined" color="primary">
                 View All
               </Button>
