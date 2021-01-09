@@ -59,15 +59,9 @@ const Stream = (props: Props) => {
     ['stream', { id, name, episode: currentEpisode }],
     () =>
       axios
-        .post(
-          '/api/streams',
-          {
-            url: dataEpisodes && dataEpisodes[currentEpisode - 1].url,
-          },
-          {
-            baseURL: 'http://localhost:3000',
-          }
-        )
+        .post('/api/streams', {
+          url: dataEpisodes && dataEpisodes[currentEpisode - 1].url,
+        })
         .then((response) => {
           return response.data.data || null;
         }),

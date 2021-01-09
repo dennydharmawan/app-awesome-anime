@@ -39,7 +39,8 @@
     "react-query": "^2.15.1",
     "react-query-devtools": "^2.4.7",
     "react-swipeable-views": "^0.13.9",
-    "rxjs": "^6.6.3"
+    "rxjs": "^6.6.3",
+    "slugify": "^1.4.6"
   },
   "scripts": {
     "dev:all": "concurrently -r \"npx next\" \"npx graphql-codegen --watch\"",

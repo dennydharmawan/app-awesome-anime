@@ -128,7 +128,6 @@ const pageDetail = () => {
     ['episodes', { id, name }],
     () =>
       axios('/api/animes', {
-        baseURL: 'http://localhost:3000',
         params: {
           keyword: (name as string).replace(/-/g, ' '),
         },
