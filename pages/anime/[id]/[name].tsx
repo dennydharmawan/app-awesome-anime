@@ -3,7 +3,7 @@ import format from "date-fns/format";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { makeQueryCache, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import { dehydrate } from "react-query/hydration";
 
 import {

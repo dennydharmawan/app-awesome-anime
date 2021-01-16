@@ -35,7 +35,7 @@
     "react-aspect-ratio": "^1.0.42",
     "react-dom": "^17.0.1",
     "react-iframe": "^1.8.0",
-    "react-intersection-observer": "^8.27.1",
+    "react-intersection-observer": "^8.31.0",
     "react-query": "^2.15.1",
     "react-query-devtools": "^2.4.7",
     "react-swipeable-views": "^0.13.9",
@@ -43,14 +43,16 @@
     "slugify": "^1.4.6"
   },
   "scripts": {
-    "dev:all": "concurrently -r \"npx next\" \"npx graphql-codegen --watch\"",
+    "dev:all": "concurrently -r \"npx next\" \"npx graphql-codegen --watch\" \"npx tsc -w\"",
     "dev:next": "next",
     "dev:codegen": "npx graphql-codegen --watch",
     "dev:debug": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start",
     "deploy-app": "vercel",
-    "update-app": "vercel --prod"
+    "update-app": "vercel --prod",
+    "typecheck": "tsc",
+    "typecheck:watch": "tsc -w"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^1.17.8",

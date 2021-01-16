@@ -1,26 +1,31 @@
-import { useQuery } from "react-query";
+import React, { useEffect, useState } from "react";
+import { InView, useInView } from "react-intersection-observer";
+import { useInfiniteQuery, useQuery } from "react-query";
 
-import { Button, fade, makeStyles } from "@material-ui/core";
+import {
+  alpha,
+  Backdrop,
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Grid,
+  makeStyles
+} from "@material-ui/core";
 import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
 
+import Layout from "../components/Layout";
+import MediaCard from "../components/MediaCard";
+import { MediaSort, MediaType } from "../generated/graphql";
 import useSdk from "../lib/useSdk";
 
 const useStyles = makeStyles((theme) => ({
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
+    backgroundColor: '#fff',
+    display: 'inline-block',
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
@@ -37,37 +42,145 @@ const useStyles = makeStyles((theme) => ({
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    width: '240px',
     transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
+    '&:focus': {
+      width: '360px',
     },
+  },
+  cardContainer: {
+    display: 'grid',
+    gridGap: theme.spacing(4),
+    gridTemplateColumns: 'repeat(auto-fit, minmax(112px, 184px))',
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
   },
 }));
 
 const search = () => {
   const classes = useStyles();
   const sdk = useSdk();
-  // const { status, data, error } = useQuery('search', () => 'aa');
-  
+  const [ref, inView, entry] = useInView();
+  const [term, setTerm] = useState<string>('');
+  const [debouncedTerm, setDebouncedTerm] = useState<string>(term);
+  const DEBOUNCE_IN_MS = 500;
+  useEffect(() => {
+    const timoutId = setTimeout(() => {
+      setDebouncedTerm(term);
+    }, DEBOUNCE_IN_MS);
+
+    return () => {
+      clearTimeout(timoutId);
+    };
+  }, [term]);
+
+  const {
+    status,
+    data,
+    isFetching,
+    isFetchingMore,
+    fetchMore,
+    canFetchMore,
+    isLoading,
+  } = useInfiniteQuery(
+    ['search', debouncedTerm],
+    (keys, debouncedTerm: string, page: number) => {
+      return sdk.AnimeSearch({
+        page,
+        search: debouncedTerm,
+        sort: MediaSort.SearchMatch,
+        type: MediaType.Anime,
+      });
+    },
+    {
+      enabled: !!debouncedTerm,
+      getFetchMore: (lastPage, allPage) => {
+        if (
+          lastPage?.Page?.pageInfo?.hasNextPage &&
+          lastPage?.Page?.pageInfo?.currentPage
+        ) {
+          return lastPage?.Page?.pageInfo?.currentPage + 1;
+        }
+      },
+    }
+  );
+
   return (
-    <div>
-      <div className={classes.search}>
-        <div className={classes.searchIcon}>
-          <SearchIcon />
+    <Layout>
+      <Box sx={{ display: 'flex', paddingBottom: '1.6rem' }}>
+        <div className={classes.search}>
+          <div className={classes.searchIcon}>
+            <SearchIcon />
+          </div>
+          <InputBase
+            placeholder="Search…"
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput,
+            }}
+            value={term}
+            inputProps={{ 'aria-label': 'search' }}
+            onChange={(e) => setTerm(e.target.value)}
+          />
         </div>
-        <InputBase
-          placeholder="Search…"
-          classes={{
-            root: classes.inputRoot,
-            input: classes.inputInput,
-          }}
-          inputProps={{ 'aria-label': 'search' }}
-        />
-      </div>
-      <div>Search Results</div>
-    </div>
+        {isLoading && (
+          <Box sx={{ pl: '1.6rem' }}>
+            <CircularProgress color="inherit" />
+          </Box>
+        )}
+      </Box>
+      {/* the button below is to help debugging useInfiniteScroll */}
+      {/* <Box>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => fetchMore()}
+          // disabled={(!canFetchMore || isFetchingMore) as boolean}
+        >
+          {isFetchingMore
+            ? 'Loading more...'
+            : canFetchMore
+            ? 'Load More'
+            : 'Nothing more to load'}
+        </Button>
+      </Box> */}
+      {!isLoading &&
+        debouncedTerm &&
+        data?.[0]?.Page?.media &&
+        data?.[0]?.Page?.media.length === 0 && <Box>No result</Box>}
+      <Box className={classes.cardContainer}>
+        {data &&
+          data.map((page) => {
+            return (
+              page?.Page?.media &&
+              page?.Page?.media.map((media, index) => {
+                return (
+                  <Grid item key={index}>
+                    <MediaCard media={media!} />
+                  </Grid>
+                );
+              })
+            );
+          })}
+        {canFetchMore && (
+          <InView
+            as="div"
+            onChange={(inView, entry) => {
+              if (inView) {
+                fetchMore();
+              }
+            }}
+          >
+            <h2>Loading more...</h2>
+          </InView>
+        )}
+      </Box>
+    </Layout>
   );
 };
 
