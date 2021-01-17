@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   },
   media: {
     height: 0,
-    paddingTop: '150%',
+    paddingTop: '150%', // 2:3 aspect ratio
     overflow: 'hidden',
     transition: 'transform .5s ease',
     '&:hover': {

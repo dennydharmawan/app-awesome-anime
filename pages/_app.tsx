@@ -63,7 +63,7 @@ const App = ({ Component, pageProps }: AppProps) => {
               <div style={{ fontSize: '62.5%' }}>
                 <Component {...pageProps} />
               </div>
-              <MediaQueryHelper />
+              {process.env.NODE_ENV === 'development' && <MediaQueryHelper />}
               <NextNprogress
                 color="#fff"
                 options={{ minimum: 0.3, easing: 'ease', speed: 800 }}
