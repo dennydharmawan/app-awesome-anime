@@ -1,4 +1,5 @@
 import axios from "axios";
+import { nanoid } from "nanoid";
 import React, { useState } from "react";
 import AspectRatio from "react-aspect-ratio";
 import { useQuery } from "react-query";
@@ -133,7 +134,7 @@ const Stream = (props: Props) => {
                 color="primary"
                 onClick={() => setCurrentEpisode(index)}
                 disableElevation
-                key={index}
+                key={nanoid()}
               >
                 {index}
               </Button>

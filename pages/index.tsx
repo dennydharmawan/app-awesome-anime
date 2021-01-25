@@ -74,9 +74,9 @@ const index = () => {
           </Box>
           <Box className={classes.cardContainer}>
             {data?.trending?.media &&
-              data?.trending?.media.map((media, index) => {
+              data?.trending?.media.map((media) => {
                 return (
-                  <Grid item key={index}>
+                  <Grid item key={media?.id}>
                     <MediaCard media={media!} />
                   </Grid>
                 );
@@ -97,9 +97,9 @@ const index = () => {
           </Box>
           <Box className={classes.cardContainer}>
             {data?.season?.media &&
-              data?.season?.media.map((media, index) => {
+              data?.season?.media.map((media) => {
                 return (
-                  <Grid item key={index}>
+                  <Grid item key={media?.id}>
                     <MediaCard media={media!} />
                   </Grid>
                 );
@@ -120,9 +120,9 @@ const index = () => {
           </Box>
           <Box className={classes.cardContainer}>
             {data?.nextSeason?.media &&
-              data?.nextSeason?.media.map((media, index) => {
+              data?.nextSeason?.media.map((media) => {
                 return (
-                  <Grid item key={index}>
+                  <Grid item key={media?.id}>
                     <MediaCard media={media!} />
                   </Grid>
                 );
@@ -143,9 +143,9 @@ const index = () => {
           </Box>
           <Box className={classes.cardContainer}>
             {data?.popular?.media &&
-              data?.popular?.media.map((media, index) => {
+              data?.popular?.media.map((media) => {
                 return (
-                  <Grid item key={index}>
+                  <Grid item key={media?.id}>
                     <MediaCard media={media!} />
                   </Grid>
                 );

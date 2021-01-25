@@ -1,3 +1,6 @@
+import { signin, signout, useSession } from "next-auth/client";
+import { useRouter } from "next/router";
+
 import {
   AppBar,
   Button,
@@ -27,6 +30,7 @@ const useStyles = makeStyles({
 
 const Header: React.FC = () => {
   const classes = useStyles();
+  const [session, loading] = useSession();
 
   return (
     <>
@@ -49,6 +53,28 @@ const Header: React.FC = () => {
             >
               Search
             </Button>
+
+            {!session && (
+              <Button
+                variant="contained"
+                href={`/auth/login?callbackUrl=${encodeURIComponent(
+                  'http://localhost:3000'
+                )}`}
+                disableElevation
+              >
+                Login
+              </Button>
+            )}
+
+            {session && (
+              <Button
+                variant="contained"
+                onClick={() => signout()}
+                disableElevation
+              >
+                Logout
+              </Button>
+            )}
           </Toolbar>
         </Container>
       </AppBar>

@@ -193,8 +193,8 @@ export default function MediaCardTooltip(props: Props) {
         </Box>
 
         <Box className={classes.flexGap}>
-          {media.genres?.map((genre, index) => {
-            return <Chip size="small" label={genre} key={index} />;
+          {media.genres?.map((genre) => {
+            return <Chip size="small" label={genre} key={genre!} />;
           })}
         </Box>
       </CardContent>
