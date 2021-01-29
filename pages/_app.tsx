@@ -1,3 +1,4 @@
+import "styles/global.css";
 import "react-aspect-ratio/aspect-ratio.css";
 
 import { DefaultSeo } from "next-seo";
