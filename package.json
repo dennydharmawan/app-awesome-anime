@@ -46,7 +46,7 @@
   },
   "scripts": {
     "dev:all": "concurrently -r \"npx next\" \"npx graphql-codegen --watch\" \"npx tsc -w\"",
-    "dev:next": "next",
+    "dev:next": "next --hostname 0.0.0.0",
     "dev:codegen": "npx graphql-codegen --watch",
     "dev:debug": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",

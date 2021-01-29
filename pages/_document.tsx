@@ -10,31 +10,41 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en" style={{ fontSize: '62.5%' }}>
         <Head>
-          {/* PWA primary color */}
-          <meta name="theme-color" content={theme.palette.primary.main} />
           <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap"
+            rel="preload"
+            href="/fonts/inter-var-latin.woff2"
+            as="font"
+            type="font/woff2"
+            crossOrigin="anonymous"
           />
 
+          {/* PWA primary color */}
+          <meta name="theme-color" content={theme.palette.primary.main} />
+          <meta
+            name="msapplication-TileColor"
+            content={theme.palette.primary.main}
+          />
+
+          {/* favicons */}
           <link
             rel="apple-touch-icon"
             sizes="180x180"
-            href="/apple-touch-icon.png"
+            href="/static/favicons/apple-touch-icon.png"
           />
           <link
             rel="icon"
             type="image/png"
             sizes="32x32"
-            href="/favicon-32x32.png"
+            href="/static/favicons//favicon-32x32.png"
           />
           <link
             rel="icon"
             type="image/png"
             sizes="16x16"
-            href="/favicon-16x16.png"
+            href="/static/favicons//favicon-16x16.png"
           />
-          <link rel="manifest" href="/site.webmanifest" />
+          <link rel="manifest" href="/static/favicons//site.webmanifest" />
+          <link href="/static/favicons/favicon.ico" rel="shortcut icon" />
         </Head>
         <body>
           <Main />

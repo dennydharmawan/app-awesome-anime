@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   cardContainer: {
     display: 'grid',
     gridGap: theme.spacing(4),
-    gridTemplateColumns: 'repeat(auto-fit, minmax(112px, 184px))',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(184px, 1fr))',
     justifyContent: 'center',
     overflow: 'hidden',
   },

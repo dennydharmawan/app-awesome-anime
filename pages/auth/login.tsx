@@ -1,33 +1,5 @@
-// import { providers, signIn } from "next-auth/client";
-// import { useRouter } from "next/router";
-
-// import { Button } from "@material-ui/core";
-
-// export default function SignIn({ providers }) {
-//   const {
-//     query: { source },
-//   } = useRouter();
-
-//   return (
-//     <>
-//       {Object.values(providers).map((provider) => (
-//         <div key={provider.name}>
-//           <Button onClick={() => signIn(provider.id, { callbackUrl: source })}>
-//             Sign in with {provider.name}
-//           </Button>
-//         </div>
-//       ))}
-//     </>
-//   );
-// }
-
-// SignIn.getInitialProps = async (context) => {
-//   return {
-//     providers: await providers(context),
-//   };
-// };
-
-import { getProviders, providers, signIn } from "next-auth/client";
+import { GetStaticProps } from "next";
+import { providers, signIn } from "next-auth/client";
 import { Providers } from "next-auth/providers";
 import { useRouter } from "next/router";
 import React from "react";
@@ -108,14 +80,18 @@ export default function SignIn({ providers }: props) {
               display: 'flex',
               flexDirection: 'column',
               gap: '16px',
-              marginBlock: '24px',
+              margin: '24px 0',
             }}
           >
             {Object.values(providers).map((provider) => (
               <Button
+                key={provider.id}
                 variant="outlined"
                 onClick={() =>
-                  signIn(provider.id, { callbackUrl: callbackUrl as string })
+                  signIn(provider.id, {
+                    callbackUrl:
+                      (callbackUrl as string) || process.env.NEXT_PUBLIC_SITE,
+                  })
                 }
               >
                 Sign in with {provider.name}
@@ -173,7 +149,7 @@ export default function SignIn({ providers }: props) {
                 </Grid>
                 <Grid item>
                   <Link href="#" variant="body2">
-                    {"Don't have an account? Join us"}
+                    {"Don't have an account? Join for free"}
                   </Link>
                 </Grid>
               </Grid>
@@ -188,8 +164,10 @@ export default function SignIn({ providers }: props) {
   );
 }
 
-SignIn.getInitialProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   return {
-    providers: await providers(),
+    props: {
+      providers: await providers(),
+    },
   };
 };

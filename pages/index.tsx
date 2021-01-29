@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   cardContainer: {
     display: 'grid',
     gridGap: theme.spacing(4),
-    gridTemplateColumns: 'repeat(auto-fill, minmax(112px, 184px))',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(184px, 1fr))',
     justifyContent: 'center',
     overflow: 'hidden',
   },
@@ -63,8 +63,14 @@ const index = () => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <Box sx={{ display: 'flex', marginBottom: 2, alignItems: 'center' }}>
-            <Box sx={{ fontWeight: 700, fontSize: 'h5.fontSize' }}>
-              Trending Now
+            <Box>
+              <Typography
+                variant="h5"
+                color="initial"
+                sx={{ fontWeight: 'bold' }}
+              >
+                Trending Now
+              </Typography>
             </Box>
             <Box sx={{ marginLeft: 'auto' }}>
               <Button variant="outlined" color="primary">
@@ -86,8 +92,14 @@ const index = () => {
 
         <Grid item xs={12}>
           <Box sx={{ display: 'flex', marginBottom: 2, alignItems: 'center' }}>
-            <Box sx={{ fontWeight: 700, fontSize: 'h5.fontSize' }}>
-              Popular this season
+            <Box>
+              <Typography
+                variant="h5"
+                color="initial"
+                sx={{ fontWeight: 'bold' }}
+              >
+                Popular this season
+              </Typography>
             </Box>
             <Box sx={{ marginLeft: 'auto' }}>
               <Button variant="outlined" color="primary">
@@ -109,8 +121,14 @@ const index = () => {
 
         <Grid item xs={12}>
           <Box sx={{ display: 'flex', marginBottom: 2, alignItems: 'center' }}>
-            <Box sx={{ fontWeight: 700, fontSize: 'h5.fontSize' }}>
-              Upcoming
+            <Box>
+              <Typography
+                variant="h5"
+                color="initial"
+                sx={{ fontWeight: 'bold' }}
+              >
+                Upcoming
+              </Typography>
             </Box>
             <Box sx={{ marginLeft: 'auto' }}>
               <Button variant="outlined" color="primary">
@@ -132,8 +150,14 @@ const index = () => {
 
         <Grid item xs={12}>
           <Box sx={{ display: 'flex', marginBottom: 2, alignItems: 'center' }}>
-            <Box sx={{ fontWeight: 700, fontSize: 'h5.fontSize' }}>
-              Popular all time
+            <Box>
+              <Typography
+                variant="h5"
+                color="initial"
+                sx={{ fontWeight: 'bold' }}
+              >
+                Popular all time
+              </Typography>
             </Box>
             <Box sx={{ marginLeft: 'auto' }}>
               <Button variant="outlined" color="primary">
