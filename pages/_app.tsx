@@ -18,18 +18,7 @@ import ErrorFallback from "../components/ErrorFallback";
 import MediaQueryHelper from "../components/MediaQueryHelper";
 import theme from "../constants/theme";
 
-const useStyles = makeStyles((theme) => ({
-  devTools: {
-    '& div > div': {
-      fontFamily: 'Inter, sans-serif !important',
-      //fontSize: '14px !important',
-    },
-  },
-}));
-
 const App = ({ Component, pageProps }: AppProps) => {
-  const classes = useStyles();
-
   useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
@@ -69,9 +58,7 @@ const App = ({ Component, pageProps }: AppProps) => {
               color="#fff"
               options={{ minimum: 0.3, easing: 'ease', speed: 800 }}
             />
-            <Box className={classes.devTools}>
-              <ReactQueryDevtools initialIsOpen />
-            </Box>
+            <ReactQueryDevtools initialIsOpen />
           </Hydrate>
         </QueryClientProvider>
       </ThemeProvider>
