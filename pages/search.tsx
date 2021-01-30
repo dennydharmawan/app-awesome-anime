@@ -80,18 +80,18 @@ const search = () => {
   }, [term]);
 
   const {
-    status,
     data,
+    error,
+    fetchNextPage,
+    hasNextPage,
     isFetching,
-    isFetchingMore,
-    fetchMore,
-    canFetchMore,
-    isLoading,
+    isFetchingNextPage,
+    status,
   } = useInfiniteQuery(
     ['search', debouncedTerm],
-    (keys, debouncedTerm: string, page: number) => {
+    ({ pageParam = 1 }) => {
       return sdk.AnimeSearch({
-        page,
+        page: pageParam,
         search: debouncedTerm,
         sort: MediaSort.SearchMatch,
         type: MediaType.Anime,
@@ -99,7 +99,7 @@ const search = () => {
     },
     {
       enabled: !!debouncedTerm,
-      getFetchMore: (lastPage, allPage) => {
+      getNextPageParam: (lastPage, allPage) => {
         if (
           lastPage?.Page?.pageInfo?.hasNextPage &&
           lastPage?.Page?.pageInfo?.currentPage
@@ -128,7 +128,7 @@ const search = () => {
             onChange={(e) => setTerm(e.target.value)}
           />
         </div>
-        {isLoading && (
+        {status === 'loading' && (
           <Box sx={{ pl: '1.6rem' }}>
             <CircularProgress color="inherit" />
           </Box>
@@ -139,23 +139,23 @@ const search = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => fetchMore()}
+          onClick={() => fetchNextPage()}
           // disabled={(!canFetchMore || isFetchingMore) as boolean}
         >
-          {isFetchingMore
+          {isFetchingNextPage
             ? 'Loading more...'
-            : canFetchMore
+            : hasNextPage
             ? 'Load More'
             : 'Nothing more to load'}
         </Button>
       </Box> */}
-      {!isLoading &&
+      {status !== 'loading' &&
         debouncedTerm &&
-        data?.[0]?.Page?.media &&
-        data?.[0]?.Page?.media.length === 0 && <Box>No result</Box>}
+        data?.pages?.[0]?.Page?.media &&
+        data?.pages?.[0]?.Page?.media.length === 0 && <Box>No result</Box>}
       <Box className={classes.cardContainer}>
         {data &&
-          data.map((page) => {
+          data?.pages.map((page) => {
             return (
               page?.Page?.media &&
               page?.Page?.media.map((media, index) => {
@@ -167,12 +167,12 @@ const search = () => {
               })
             );
           })}
-        {canFetchMore && (
+        {hasNextPage && (
           <InView
             as="div"
             onChange={(inView, entry) => {
               if (inView) {
-                fetchMore();
+                fetchNextPage();
               }
             }}
           >

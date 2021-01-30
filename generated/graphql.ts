@@ -854,6 +854,8 @@ export type UserOptions = {
   profileColor?: Maybe<Scalars['String']>;
   /** Notification options */
   notificationOptions?: Maybe<Array<Maybe<NotificationOption>>>;
+  /** The user's timezone offset (Auth user only) */
+  timezone?: Maybe<Scalars['String']>;
 };
 
 /** The language the user wants to see media titles in */
@@ -1092,7 +1094,7 @@ export type Media = {
   seasonYear?: Maybe<Scalars['Int']>;
   /**
    * The year & season the media was initially released in
-   * @deprecated 
+   * @deprecated
    */
   seasonInt?: Maybe<Scalars['Int']>;
   /** The amount of episodes the anime has when complete */
@@ -3398,6 +3400,7 @@ export type MutationUpdateUserArgs = {
   profileColor?: Maybe<Scalars['String']>;
   donatorBadge?: Maybe<Scalars['String']>;
   notificationOptions?: Maybe<Array<Maybe<NotificationOptionInput>>>;
+  timezone?: Maybe<Scalars['String']>;
   animeListOptions?: Maybe<MediaListOptionsInput>;
   mangaListOptions?: Maybe<MediaListOptionsInput>;
 };
