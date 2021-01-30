@@ -11,7 +11,7 @@ module.exports = {
       {
         source: '/api/auth/signin', // disable next-auth page
         destination: '/auth/login',
-        permanent: true,
+        permanent: false,
       },
     ];
   },

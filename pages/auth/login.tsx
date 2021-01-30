@@ -167,7 +167,7 @@ export default function SignIn({ providers }: props) {
 export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
-      providers: await providers(),
+      providers: (await providers()) || [],
     },
   };
 };
