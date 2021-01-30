@@ -1,3 +1,5 @@
+import { NextPageContext } from "next";
+import { getSession, useSession } from "next-auth/client";
 import { useQuery } from "react-query";
 
 import {
@@ -16,6 +18,7 @@ import Layout from "../components/Layout";
 import MediaCard from "../components/MediaCard";
 import MediaCardTooltip from "../components/MediaCardTooltip";
 import { Media, MediaFragment, MediaSeason } from "../generated/graphql";
+import { requirePageAuth } from "../lib/requirePageAuth";
 import useSdk from "../lib/useSdk";
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
 //TODO optimize images
 //https://twitter.com/wongmjane/status/1293076852190220288
 //use next-optimize-image preload with lqip
-
 const index = () => {
   const classes = useStyles();
 
@@ -54,7 +56,6 @@ const index = () => {
       </Layout>
     );
   }
-
   // TODO error handling
   // TODO show recently released episode for this week
 
@@ -182,3 +183,12 @@ const index = () => {
 };
 
 export default index;
+
+// https://next-auth.js.org/tutorials/securing-pages-and-api-routes#client-side
+export async function getServerSideProps(context: NextPageContext) {
+  const session = await getSession(context);
+
+  return {
+    props: { session },
+  };
+}

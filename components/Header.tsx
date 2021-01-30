@@ -30,7 +30,7 @@ const useStyles = makeStyles({
 
 const Header: React.FC = () => {
   const classes = useStyles();
-  const [session, loading] = useSession();
+  const [session] = useSession();
 
   return (
     <>
