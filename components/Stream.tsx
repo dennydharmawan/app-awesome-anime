@@ -67,7 +67,7 @@ const Stream = (props: Props) => {
           return response.data.data || null;
         }),
     {
-      enabled: id && name && dataEpisodes,
+      enabled: Boolean(id && name && dataEpisodes),
     }
   );
 
