@@ -30,6 +30,7 @@
     "nextjs-progressbar": "0.0.6",
     "nprogress": "^0.2.0",
     "p-map": "^4.0.0",
+    "p-memoize": "^4.0.1",
     "react": "^17.0.1",
     "react-aspect-ratio": "^1.0.42",
     "react-dom": "^17.0.1",

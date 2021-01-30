@@ -1,12 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { parseMultiStreamVideo, parseVideo } from "../../lib/animeScraper/html";
+import { parseMultiStreamVideo } from "../../lib/animeScraper/html";
 import getPageFromUrl from "../../lib/getPageFromUrl";
-import {
-  EpisodeMultiStream,
-  MultiStreamUrl,
-  VideoSource
-} from "../../lib/types";
+import { MultiStreamUrl } from "../../lib/types";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const {

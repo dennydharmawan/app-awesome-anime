@@ -1,8 +1,7 @@
-import { GetStaticProps } from "next";
 import { providers, signIn } from "next-auth/client";
 import { Providers } from "next-auth/providers";
 import { useRouter } from "next/router";
-import React from "react";
+import pMemoize from "p-memoize";
 
 import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
@@ -165,7 +164,9 @@ export default function SignIn({ providers }: props) {
 }
 
 export const getServerSideProps = async () => {
-  const loginProviders = await providers();
+  const memoizeProviders = pMemoize(providers, { maxAge: 31536000 });
+
+  const loginProviders = await memoizeProviders();
 
   return {
     props: {
