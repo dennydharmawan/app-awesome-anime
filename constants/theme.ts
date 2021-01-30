@@ -37,9 +37,9 @@ declare module '@material-ui/core/Typography/Typography' {
 
 let theme = createMuiTheme({
   typography: {
-    fontFamily: 'Inter, Arial, Helvetica, sans-serif',
+    fontFamily:
+      'Inter, system-ui, -apple-system, Segoe UI,Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji',
     fontWeightRegular: 500,
-    htmlFontSize: 10,
   },
   palette: {
     primary: {
@@ -69,7 +69,7 @@ let theme = createMuiTheme({
           style: {
             color: 'hsl(0, 0%, 13%)',
             fontWeight: 700,
-            fontSize: '1.6rem',
+            fontSize: '16px',
           },
         },
         {
@@ -77,7 +77,7 @@ let theme = createMuiTheme({
           style: {
             color: 'hsl(0, 0%, 29%)',
             fontWeight: 500,
-            fontSize: '1.4rem',
+            fontSize: '16px',
           },
         },
         {
@@ -85,7 +85,7 @@ let theme = createMuiTheme({
           style: {
             color: 'hsl(0, 0%, 54%)',
             fontWeight: 500,
-            fontSize: '1.4rem',
+            fontSize: '14px',
           },
         },
       ],

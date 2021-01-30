@@ -112,7 +112,7 @@ const search = () => {
 
   return (
     <Layout>
-      <Box sx={{ display: 'flex', paddingBottom: '1.6rem' }}>
+      <Box sx={{ display: 'flex', paddingBottom: '16px' }}>
         <div className={classes.search}>
           <div className={classes.searchIcon}>
             <SearchIcon />
@@ -129,7 +129,7 @@ const search = () => {
           />
         </div>
         {status === 'loading' && (
-          <Box sx={{ pl: '1.6rem' }}>
+          <Box sx={{ pl: '16px' }}>
             <CircularProgress color="inherit" />
           </Box>
         )}

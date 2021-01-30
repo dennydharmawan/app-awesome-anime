@@ -8,7 +8,7 @@ import theme from "../constants/theme";
 export default class MyDocument extends Document {
   render() {
     return (
-      <Html lang="en" style={{ fontSize: '62.5%' }}>
+      <Html lang="en">
         <Head>
           <link
             rel="preload"

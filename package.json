@@ -34,6 +34,7 @@
     "react": "^17.0.1",
     "react-aspect-ratio": "^1.0.42",
     "react-dom": "^17.0.1",
+    "react-error-boundary": "^3.1.0",
     "react-intersection-observer": "^8.31.0",
     "react-query": "^3.6.0",
     "react-query-devtools": "^2.6.3",
@@ -43,7 +44,7 @@
   },
   "scripts": {
     "dev:all": "concurrently -r \"npx next\" \"npx graphql-codegen --watch\" \"npx tsc -w\"",
-    "dev:next": "next --hostname 0.0.0.0",
+    "dev:next": "next",
     "dev:codegen": "npx graphql-codegen --watch",
     "dev:debug": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",

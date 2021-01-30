@@ -54,7 +54,7 @@ const useStyles = makeStyles<Theme, StyleProps>((theme) => ({
   lightText: {
     color: 'hsl(0, 0%, 54%)',
     fontWeight: 500,
-    fontSize: '1.3rem',
+    fontSize: '14px',
   },
   inlineBox: {
     display: 'inline',

@@ -22,7 +22,7 @@ const Layout: React.FC = ({ children }) => {
   return (
     <>
       <Head>
-        <title>Awesome Anime | the best anime streaming platform</title>
+        <title>Awesome Anime | Anime Streaming Platform</title>
         {/* <meta name="robots" content="follow, index" />
         <meta content={meta.description} name="description" />
         <meta property="og:url" content={`https://leerob.io${router.asPath}`} />

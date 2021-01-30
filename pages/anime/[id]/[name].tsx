@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
   lightText: {
     color: 'hsl(0, 0%, 54%)',
     fontWeight: 500,
-    fontSize: '0.875rem',
+    fontSize: '12px',
   },
 }));
 
@@ -188,7 +188,7 @@ const pageDetail = () => {
                   lineHeight: '1.82',
                   color: 'hsl(0, 0%, 29%)',
                   fontWeight: 500,
-                  fontSize: '1.4rem',
+                  fontSize: '14px',
                 }}
                 dangerouslySetInnerHTML={{
                   __html: dataAnime?.Media?.description as string,

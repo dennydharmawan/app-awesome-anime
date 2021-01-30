@@ -94,3 +94,20 @@ function Link(props: LinkProps) {
 export default React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
   <Link {...props} innerRef={ref} />
 ));
+
+// Examples: 
+
+// <div>
+// <Link href="/about">About</Link>
+// <Button
+//   variant="contained"
+//   color="primary"
+//   component={Link as React.ElementType}
+//   href="/about"
+// >
+//   About
+// </Button>
+// <ListItem button component={Link} href="/about">
+//   <ListItemText primary="About" />
+// </ListItem>
+// </div>
