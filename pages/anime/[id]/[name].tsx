@@ -116,7 +116,7 @@ const pageDetail = () => {
         id: parseInt(id as string),
       }),
     {
-      enabled: id && name,
+      enabled: Boolean(id && name),
     }
   );
 
@@ -135,7 +135,7 @@ const pageDetail = () => {
         return response.data.data || null;
       }),
     {
-      enabled: id && name,
+      enabled: Boolean(id && name),
     }
   );
 
