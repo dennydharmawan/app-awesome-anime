@@ -1,6 +1,7 @@
 import "../styles/global.css";
 import "react-aspect-ratio/aspect-ratio.css";
 
+import { Provider } from "next-auth/client";
 import { AppProps } from "next/app";
 import NextNprogress from "nextjs-progressbar";
 import { useEffect } from "react";
@@ -51,7 +52,9 @@ const App = ({ Component, pageProps }: AppProps) => {
         <QueryClientProvider client={queryClient}>
           <Hydrate state={pageProps.dehydratedState}>
             <div style={{ fontSize: '62.5%' }}>
-              <Component {...pageProps} />
+              <Provider session={pageProps.session}>
+                <Component {...pageProps} />
+              </Provider>
             </div>
             {process.env.NODE_ENV === 'development' && <MediaQueryHelper />}
             <NextNprogress
