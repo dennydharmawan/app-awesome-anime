@@ -17,7 +17,7 @@ function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
           href="/"
           onClick={resetErrorBoundary}
         >
-          Return Home
+          Go to homepage
         </Button>
       </div>
     </Layout>

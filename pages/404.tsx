@@ -8,11 +8,13 @@ const notFound = () => {
     <Layout>
       <Box role="alert" sx={{ display: 'grid', placeItems: 'center' }}>
         <Box sx={{ width: '50%' }}>
-          <Typography variant="subtitle1" gutterBottom>
-            Oops... the page you're looking for is not found. It seems you've
-            found something that used to exist, or you spelled something wrong.
+          <Typography variant="h5" gutterBottom>
+            404 - PAGE NOT FOUND
           </Typography>
-
+          <Typography variant="subtitle1" gutterBottom>
+            Oops... The page you are looking for might have been removed, had
+            its name changed or is temporarily unavailable.
+          </Typography>
           <Typography variant="subtitle1" gutterBottom>
             Could you double check that URL?
           </Typography>
@@ -22,7 +24,7 @@ const notFound = () => {
             component={Link as React.ElementType}
             href="/"
           >
-            Return Home
+            Go to homepage
           </Button>
         </Box>
       </Box>
