@@ -13,10 +13,7 @@ const notFound = () => {
           </Typography>
           <Typography variant="subtitle1" gutterBottom>
             Oops... The page you are looking for might have been removed, had
-            its name changed or is temporarily unavailable.
-          </Typography>
-          <Typography variant="subtitle1" gutterBottom>
-            Could you double check that URL?
+            its name changed, or is temporarily unavailable.
           </Typography>
 
           <Button

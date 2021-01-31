@@ -25,3 +25,4 @@ function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
 }
 
 export default ErrorFallback;
+

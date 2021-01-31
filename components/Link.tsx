@@ -95,7 +95,7 @@ export default React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
   <Link {...props} innerRef={ref} />
 ));
 
-// Examples: 
+// Examples:
 
 // <div>
 // <Link href="/about">About</Link>
