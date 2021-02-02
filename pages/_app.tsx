@@ -52,7 +52,6 @@ const App = ({ Component, pageProps }: AppProps) => {
                 <Component {...pageProps} />
               </ErrorBoundary>
             </Provider>
-
             {process.env.NODE_ENV === 'development' && <MediaQueryHelper />}
             <NextNprogress
               color="#fff"
