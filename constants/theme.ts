@@ -35,7 +35,27 @@ declare module '@material-ui/core/Typography/Typography' {
   }
 }
 
+declare module '@material-ui/core/styles' {
+  interface Theme {
+    grid: {
+      gridGap: string;
+      minColumnWidth: string;
+    };
+  }
+  // allow configuration using `createMuiTheme`
+  interface ThemeOptions {
+    grid: {
+      gridGap: string;
+      minColumnWidth: string;
+    };
+  }
+}
+
 let theme = createMuiTheme({
+  grid: {
+    gridGap: '2rem',
+    minColumnWidth: '18rem',
+  },
   typography: {
     fontFamily:
       'Inter, system-ui, -apple-system, Segoe UI,Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji',

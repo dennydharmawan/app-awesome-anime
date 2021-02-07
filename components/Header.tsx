@@ -3,17 +3,28 @@ import { useRouter } from "next/router";
 
 import {
   AppBar,
+  Avatar,
+  Box,
   Button,
   Container,
+  Divider,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
   Toolbar,
   Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { AcUnitRounded } from "@material-ui/icons";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
 
 import theme from "../constants/theme";
 import Link from "./Link";
+import { PopperMenu, PopperMenuButton, PopperMenuContent } from "./PopperMenu";
 
 const useStyles = makeStyles({
   root: {
@@ -23,7 +34,6 @@ const useStyles = makeStyles({
     color: 'white',
     display: 'flex',
     alignItems: 'center',
-    marginRight: 'auto',
   },
   offset: theme.mixins.toolbar,
 });
@@ -38,43 +48,86 @@ const Header: React.FC = () => {
         <Container maxWidth="lg">
           <Toolbar>
             <Link className={classes.mainLink} href="/">
-              <AcUnitRounded />
               <Typography variant="h4" component="h1">
                 Awesome Anime
               </Typography>
-              <AcUnitRounded />
             </Link>
-            <Button
-              variant="contained"
-              component={Link as React.ElementType}
-              href="/search"
-              startIcon={<SearchIcon />}
-              disableElevation
+
+            <Box
+              sx={{
+                display: 'flex',
+                columnGap: '1rem',
+                flexWrap: 'wrap',
+                marginLeft: 'auto',
+              }}
             >
-              Search
-            </Button>
-
-            {!session && (
               <Button
                 variant="contained"
-                href={`/auth/login?callbackUrl=${encodeURIComponent(
-                  process.env.NEXT_PUBLIC_SITE as string
-                )}`}
+                component={Link as React.ElementType}
+                href="/search"
+                startIcon={<SearchIcon />}
                 disableElevation
               >
-                Login
+                Search
               </Button>
-            )}
 
-            {session && (
-              <Button
-                variant="contained"
-                onClick={() => signout()}
-                disableElevation
-              >
-                Logout
-              </Button>
-            )}
+              {!session && (
+                <Button
+                  variant="contained"
+                  href={`/auth/login?callbackUrl=${encodeURIComponent(
+                    process.env.NEXT_PUBLIC_SITE as string
+                  )}`}
+                  disableElevation
+                >
+                  Login
+                </Button>
+              )}
+
+              {session && (
+                <PopperMenu>
+                  <PopperMenuButton>
+                    <IconButton>
+                      <Avatar
+                        alt={session.user.name as string}
+                        src={session.user.image as string}
+                        sx={{
+                          width: '36px',
+                          height: '36px',
+                        }}
+                      />
+                    </IconButton>
+                  </PopperMenuButton>
+                  <PopperMenuContent>
+                    <Box>
+                      <Box
+                        sx={{
+                          textAlign: 'center',
+                          textTransform: 'capitalize',
+                          padding: '1em 2em',
+                        }}
+                      >
+                        {session.user.name}
+                      </Box>
+                      <Divider />
+                      <List component="nav" disablePadding>
+                        <ListItem button component={Link} href="/home">
+                          <ListItemIcon>
+                            <HomeIcon />
+                          </ListItemIcon>
+                          <ListItemText primary="My anime" />
+                        </ListItem>
+                        <ListItem button onClick={() => signout()}>
+                          <ListItemIcon>
+                            <ExitToAppIcon />
+                          </ListItemIcon>
+                          <ListItemText primary="Logout" />
+                        </ListItem>
+                      </List>
+                    </Box>
+                  </PopperMenuContent>
+                </PopperMenu>
+              )}
+            </Box>
           </Toolbar>
         </Container>
       </AppBar>
