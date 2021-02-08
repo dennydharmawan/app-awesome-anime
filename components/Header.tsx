@@ -14,6 +14,7 @@ import {
   ListItemIcon,
   ListItemText,
   Toolbar,
+  Tooltip,
   Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -23,6 +24,8 @@ import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
 
 import theme from "../constants/theme";
+import LoginIcon from "./icons/LoginIcon";
+import LogoutIcon from "./icons/LogoutIcon";
 import Link from "./Link";
 import { PopperMenu, PopperMenuButton, PopperMenuContent } from "./PopperMenu";
 
@@ -77,6 +80,7 @@ const Header: React.FC = () => {
                   href={`/auth/login?callbackUrl=${encodeURIComponent(
                     process.env.NEXT_PUBLIC_SITE as string
                   )}`}
+                  startIcon={<LoginIcon />}
                   disableElevation
                 >
                   Login
@@ -91,12 +95,13 @@ const Header: React.FC = () => {
                         alt={session.user.name as string}
                         src={session.user.image as string}
                         sx={{
-                          width: '36px',
-                          height: '36px',
+                          width: '2.25rem',
+                          height: '2.25rem',
                         }}
                       />
                     </IconButton>
                   </PopperMenuButton>
+
                   <PopperMenuContent>
                     <Box>
                       <Box
@@ -118,7 +123,7 @@ const Header: React.FC = () => {
                         </ListItem>
                         <ListItem button onClick={() => signout()}>
                           <ListItemIcon>
-                            <ExitToAppIcon />
+                            <LogoutIcon />
                           </ListItemIcon>
                           <ListItemText primary="Logout" />
                         </ListItem>

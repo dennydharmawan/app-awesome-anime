@@ -38,7 +38,6 @@ function usePopperMenu() {
 
 const useStyles = makeStyles({
   popper: {
-    zIndex: 1,
     '&[data-popper-placement*="bottom"] $arrow': {
       top: 0,
       left: 0,
@@ -199,6 +198,7 @@ function PopperMenuContent({ children }: { children: ReactNode }) {
         >
           <Paper
             sx={{
+              zIndex: 1300,
               backgroundColor: '#fff',
               color: '#000',
               boxShadow:

@@ -1,13 +1,16 @@
+import { signin, signout, useSession } from "next-auth/client";
 import Image from "next/image";
 import React from "react";
 
-import { Box, Tooltip } from "@material-ui/core";
+import { Box, IconButton, Tooltip } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import BookmarkIcon from "@material-ui/icons/Bookmark";
+import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 
 import theme from "../constants/theme";
 import { MediaFragment } from "../generated/graphql";
@@ -27,11 +30,13 @@ const useStyles = makeStyles({
     overflow: 'hidden',
     transition: 'transform .5s ease',
     '&:hover': {
-      transform: 'scale(1.2)',
+      transform: 'scale(1.1)',
     },
   },
   mediaTitle: {
     padding: theme.spacing(1),
+    display: 'flex',
+    alignItems: 'center',
   },
   tooltip: {
     border: 0,
@@ -52,49 +57,57 @@ type Props = {
 
 export const MediaCard = (props: Props) => {
   const { media } = props;
-
+  const [session] = useSession();
   const classes = useStyles();
 
   const title = media.title?.userPreferred || 'Unknown Title';
 
   return (
-    <Tooltip
-      title={
-        <React.Fragment>
-          <MediaCardTooltip media={media} />
-        </React.Fragment>
-      }
-      placement="right"
-      arrow
-      classes={{ tooltip: classes.tooltip, arrow: classes.arrow }}
-    >
-      <Card className={classes.root} elevation={0}>
-        <CardActionArea
-          component={Link as React.ElementType}
-          href={`/anime/${media.id}/${toSlugFormat(title)}`}
+    <Card className={classes.root} elevation={0}>
+      <CardActionArea
+        component={Link as React.ElementType}
+        href={`/anime/${media.id}/${toSlugFormat(title)}`}
+      >
+        <Tooltip
+          title={<MediaCardTooltip media={media} />}
+          placement="right"
+          arrow
+          classes={{ tooltip: classes.tooltip, arrow: classes.arrow }}
         >
-          <Box sx={{ overflow: 'hidden' }}>
-            {/* <CardMedia
+          <Box sx={{ overflow: 'hidden', position: 'relative' }}>
+            <CardMedia
               className={classes.media}
               image={media.coverImage?.large as string}
               title={media.title?.userPreferred as string}
-            /> */}
-            <Image
-              src={(media.coverImage?.large as string) || ''}
-              alt={(media.title?.userPreferred as string) || ''}
-              width={184}
-              height={260}
             />
           </Box>
+        </Tooltip>
 
-          <CardContent classes={{ root: classes.mediaTitle }}>
-            <Typography color="textPrimary" noWrap>
-              {toTitleCase(title)}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
-    </Tooltip>
+        <CardContent classes={{ root: classes.mediaTitle }}>
+          <Typography color="textPrimary" noWrap>
+            {toTitleCase(title)}
+          </Typography>
+
+          {session && (
+            <Tooltip title="Bookmark">
+              <IconButton
+                aria-label="Bookmark"
+                size="small"
+                sx={{
+                  marginLeft: 'auto',
+                  ':hover': {
+                    backgroundColor: 'rgba(31,38,49, 0.7)',
+                    color: '#fff',
+                  },
+                }}
+              >
+                <BookmarkBorderIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+        </CardContent>
+      </CardActionArea>
+    </Card>
   );
 };
 
