@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Stream = (props: Props) => {
+function Stream(props: Props) {
   const { id, name, numberOfEpisodes, episodePerPage, dataEpisodes } = props;
   const [currentEpisode, setCurrentEpisode] = useState<number>(1);
   const [currentGroup, setCurrentGroup] = useState<number>(1);
@@ -146,7 +146,7 @@ const Stream = (props: Props) => {
       </Box>
     </Box>
   );
-};
+}
 
 export default Stream;
 

@@ -1,5 +1,5 @@
-import { signin, signout, useSession } from "next-auth/client";
-import { useRouter } from "next/router";
+import { signout, useSession } from "next-auth/client";
+import { useState } from "react";
 
 import {
   AppBar,
@@ -18,8 +18,6 @@ import {
   Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { AcUnitRounded } from "@material-ui/icons";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
 
@@ -41,9 +39,11 @@ const useStyles = makeStyles({
   offset: theme.mixins.toolbar,
 });
 
-const Header: React.FC = () => {
+// https://stackoverflow.com/questions/60751964/react-material-uihow-to-disable-tooltip-after-click-it
+function Header() {
   const classes = useStyles();
   const [session] = useSession();
+  const [tooltipOpen, setTooltipOpen] = useState<boolean>(false);
 
   return (
     <>
@@ -90,15 +90,21 @@ const Header: React.FC = () => {
               {session && (
                 <PopperMenu>
                   <PopperMenuButton>
-                    <IconButton>
-                      <Avatar
-                        alt={session.user.name as string}
-                        src={session.user.image as string}
-                        sx={{
-                          width: '2.25rem',
-                          height: '2.25rem',
-                        }}
-                      />
+                    <IconButton
+                      onClick={() => setTooltipOpen(false)}
+                      onMouseEnter={() => setTooltipOpen(true)}
+                      onMouseLeave={() => setTooltipOpen(false)}
+                    >
+                      <Tooltip title="My menu" open={tooltipOpen}>
+                        <Avatar
+                          alt={session.user.name as string}
+                          src={session.user.image as string}
+                          sx={{
+                            width: '2.25rem',
+                            height: '2.25rem',
+                          }}
+                        />
+                      </Tooltip>
                     </IconButton>
                   </PopperMenuButton>
 
@@ -139,6 +145,6 @@ const Header: React.FC = () => {
       <div className={classes.offset} />
     </>
   );
-};
+}
 
 export default Header;

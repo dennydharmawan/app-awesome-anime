@@ -122,7 +122,7 @@ type Props = {
   media: MediaFragment;
 };
 
-export default function MediaCardTooltip(props: Props) {
+function MediaCardTooltip(props: Props) {
   const { media } = props;
   const classes = useStyles({ mediaColor: media?.coverImage?.color as string });
   const bullet = <span className={classes.bullet}>•</span>;
@@ -201,3 +201,5 @@ export default function MediaCardTooltip(props: Props) {
     </Card>
   );
 }
+
+export default MediaCardTooltip;

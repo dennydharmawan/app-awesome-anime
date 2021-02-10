@@ -1,15 +1,12 @@
 import axios from "axios";
 import format from "date-fns/format";
-import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useQuery } from "react-query";
-import { dehydrate } from "react-query/hydration";
 
 import {
   Backdrop,
   Box,
-  Button,
   Card,
   CardMedia,
   CircularProgress,
@@ -22,9 +19,7 @@ import Header from "../../../components/Header";
 import KeyValueVertical from "../../../components/KeyValueVertical";
 import Layout from "../../../components/Layout";
 import StreamEpisodeControl from "../../../components/Stream";
-import { getSdk, MediaQuery } from "../../../generated/graphql";
-import { initializeClient } from "../../../graphql/client";
-import { Episode, EpisodeGroup, MultiStreamUrl } from "../../../lib/types";
+import { Episode } from "../../../lib/types";
 import useSdk from "../../../lib/useSdk";
 
 const useStyles = makeStyles((theme) => ({

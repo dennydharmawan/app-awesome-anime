@@ -59,6 +59,7 @@
     "@graphql-codegen/typescript": "^1.17.9",
     "@graphql-codegen/typescript-graphql-request": "^2.0.0",
     "@graphql-codegen/typescript-operations": "^1.17.8",
+    "@material-ui/codemod": "^4.5.0",
     "@types/axios": "^0.14.0",
     "@types/cheerio": "^0.22.23",
     "@types/next-auth": "^3.1.21",

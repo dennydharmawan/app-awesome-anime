@@ -182,8 +182,6 @@ const index = () => {
   );
 };
 
-export default index;
-
 // https://next-auth.js.org/tutorials/securing-pages-and-api-routes#client-side
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
@@ -192,3 +190,5 @@ export async function getServerSideProps(context: NextPageContext) {
     props: { session },
   };
 }
+
+export default index;

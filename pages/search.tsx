@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const search = () => {
+function Search() {
   const classes = useStyles();
   const sdk = useSdk();
   const [ref, inView, entry] = useInView();
@@ -182,6 +182,6 @@ const search = () => {
       </Box>
     </Layout>
   );
-};
+}
 
-export default search;
+export default Search;

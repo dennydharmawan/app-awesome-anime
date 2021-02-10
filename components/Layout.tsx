@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { ReactNode } from "react";
 
 import { Container, Grid, makeStyles } from "@material-ui/core";
 
@@ -16,7 +17,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Layout: React.FC = ({ children }) => {
+type Props = {
+  children: ReactNode;
+};
+
+function Layout({ children }: Props) {
   const classes = useStyles();
 
   return (
@@ -52,6 +57,6 @@ const Layout: React.FC = ({ children }) => {
       </Grid>
     </>
   );
-};
+}
 
 export default Layout;

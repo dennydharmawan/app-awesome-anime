@@ -14,6 +14,10 @@ import {
 import { ClickAwayListener, Grow, Paper, Popper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
+const callAll = <P extends any[]>(...fns: Array<(...a: P) => void>) => (
+  ...args: P
+) => fns.forEach((fn) => fn && fn(...args));
+
 type PopperMenuContextType = {
   anchorRef: RefObject<HTMLButtonElement>;
   arrowRef: HTMLSpanElement | null;
@@ -98,7 +102,7 @@ function PopperMenu({ children }: { children: ReactNode }) {
   const [arrowRef, setArrowRef] = useState<HTMLSpanElement | null>(null);
 
   const handleToggle = () => {
-    console.log('test');
+    console.log('aaa');
     setOpen((prevOpen) => !prevOpen);
   };
 
@@ -132,13 +136,15 @@ function PopperMenu({ children }: { children: ReactNode }) {
 function PopperMenuButton({ children }: { children: ReactElement }) {
   const { anchorRef, handleToggle } = usePopperMenu();
 
+  const { onClick } = children.props;
+
   const props = {
     edge: 'start',
     color: 'inherit',
     ref: anchorRef,
     ['aria-haspopup']: 'true',
     ['aria-label']: 'menu',
-    onClick: handleToggle,
+    onClick: callAll(onClick, handleToggle),
   };
 
   return cloneElement(children, { ...props });

@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const KeyValueVertical = (prop: Props) => {
+function KeyValueVertical(prop: Props) {
   const { keyAs, value } = prop;
   const classes = useStyles();
 
@@ -34,6 +34,6 @@ const KeyValueVertical = (prop: Props) => {
       <Typography variant="light">{value}</Typography>
     </Box>
   );
-};
+}
 
 export default KeyValueVertical;

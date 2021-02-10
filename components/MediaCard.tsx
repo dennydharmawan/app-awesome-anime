@@ -55,7 +55,7 @@ type Props = {
   media: MediaFragment;
 };
 
-export const MediaCard = (props: Props) => {
+function MediaCard(props: Props) {
   const { media } = props;
   const [session] = useSession();
   const classes = useStyles();
@@ -109,6 +109,6 @@ export const MediaCard = (props: Props) => {
       </CardActionArea>
     </Card>
   );
-};
+}
 
 export default MediaCard;

@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import { ElementType, ReactNode } from "react";
 
 import Box, { BoxProps } from "@material-ui/core/Box";
 import { experimentalStyled } from "@material-ui/core/styles";
